@@ -1,0 +1,18 @@
+[Unit]
+Description=www-blocker - ban hosts hammering Apache with 400/404 requests
+Documentation=file:///usr/local/www-blocker/README.md
+After=network-online.target httpd.service rc-local.service
+Wants=network-online.target
+
+[Service]
+Type=simple
+ExecStart=/usr/bin/python3 -u /usr/local/www-blocker/www-blocker.py run
+ExecReload=/bin/kill -HUP $MAINPID
+Restart=always
+RestartSec=5
+ProtectHome=yes
+PrivateTmp=yes
+NoNewPrivileges=yes
+
+[Install]
+WantedBy=multi-user.target
